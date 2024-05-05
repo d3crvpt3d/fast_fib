@@ -1,10 +1,16 @@
 use astro_float::{BigFloat, RoundingMode};
-use::std::io::stdin;
+use::std::env;
 fn main() {
-    let mut buf = String::new();
-    stdin().read_line(&mut buf).expect("cant read stdin");
 
-    let n:usize = buf.trim().parse::<usize>().expect("cant parse");
+    let args: Vec<String> = env::args().collect();
+
+    if args.len() != 2 {
+        println!("no argument");
+        return;
+    }
+
+    let n:usize = args[1].trim().parse::<usize>().unwrap_or(1);
+
     let p: usize = ((n as f64 * (1.62f64).log2()) as usize).max(32); //needed precision is log_2(golden_ratio^n)
     let one: BigFloat = BigFloat::from_i32(1, p); //precalc one
     let two: BigFloat = BigFloat::from_i32(2, p); //precalc two
